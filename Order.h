@@ -12,6 +12,11 @@ class Order {
 private:
     OrderImpl* impl; // PImpl
 
+class StrategyNotSet : public std::logic_error {
+public:
+    StrategyNotSet() : std::logic_error("Klaida: Skaiciavimo strategija nenustatyta!") {}
+};
+
 public:
     Order();
     ~Order();

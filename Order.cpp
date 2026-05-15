@@ -1,15 +1,21 @@
 #include "Order.h"
+#include "PriceStrategy.h"
 #include <vector>
 
 class OrderImpl {
 public:
     std::vector<MenuItem*> items;
+    PriceStrategy* currentStrategy = nullptr; // Iš pradžių strategijos nėra
     ~OrderImpl() {
         for (MenuItem* item : items) {
             delete item;
         }
         items.clear();
     }
+    void setStrategy(PriceStrategy* strategy);
+    double calculateTotal() const;
+
+
 };
 
 Order::Order() {
@@ -69,4 +75,19 @@ Order::Iterator Order::begin() {
 Order::Iterator Order::end() {
     if (impl->items.empty()) return Iterator(nullptr);
     return Iterator(&impl->items[0] + impl->items.size());
+}
+
+// Nustatome arba pakeičiame strategiją
+void Order::setStrategy(PriceStrategy* strategy) {
+    impl->currentStrategy = strategy;
+}
+
+// Skaičiuojama galutine suma
+double Order::calculateTotal() const {
+    // Jei dėstytojas nepakirto strategijos - metam klaidą!
+    if (impl->currentStrategy == nullptr) {
+        throw StrategyNotSet();
+    }
+    // Deleguojame darbą pasirinktai strategijai
+    return impl->currentStrategy->calculate(impl->items);
 }
