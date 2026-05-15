@@ -12,10 +12,6 @@ public:
         }
         items.clear();
     }
-    void setStrategy(PriceStrategy* strategy);
-    double calculateTotal() const;
-
-
 };
 
 Order::Order() {
@@ -90,4 +86,15 @@ double Order::calculateTotal() const {
     }
     // Deleguojame darbą pasirinktai strategijai
     return impl->currentStrategy->calculate(impl->items);
+}
+
+Order Order::filterItems(std::function<bool(MenuItem*)> callback) const {
+    Order filteredOrder;
+    for (MenuItem* item : impl->items) {
+        if (callback(item)) {
+            // Kadangi filtravimas sukuria naują konteinerį, kopijuojame elementą per clone()
+            filteredOrder.addItem(item->clone());
+        }
+    }
+    return filteredOrder;
 }

@@ -2,20 +2,21 @@
 #define ORDER_H
 
 #include "MenuItem.h"
+#include <functional>
 #include <cstddef>
 
 // Išankstinė deklaracija
 class OrderImpl;
 class PriceStrategy; // Reikės vėliau strategijai
 
-class Order {
-private:
-    OrderImpl* impl; // PImpl
-
 class StrategyNotSet : public std::logic_error {
 public:
     StrategyNotSet() : std::logic_error("Klaida: Skaiciavimo strategija nenustatyta!") {}
 };
+
+class Order {
+private:
+    OrderImpl* impl; // PImpl
 
 public:
     Order();
@@ -28,6 +29,10 @@ public:
     void addItem(MenuItem* item);
     size_t getSize() const;
     MenuItem* getItem(size_t index) const;
+    
+    void setStrategy(PriceStrategy* strategy);
+    double calculateTotal() const;
+    Order filterItems(std::function<bool(MenuItem*)> callback) const;
 
     // Iteratorius
     class Iterator {
