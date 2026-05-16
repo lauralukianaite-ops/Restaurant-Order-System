@@ -39,10 +39,18 @@ public:
     private:
         MenuItem** current; // Rodyklė į masyvo elementa
     public:
+        using iterator_category = std::forward_iterator_tag;
+        using value_type = MenuItem*;
+        using difference_type = std::ptrdiff_t;
+        using pointer = MenuItem**;
+        using reference = MenuItem*&;
+
         Iterator(MenuItem** ptr) : current(ptr) {}
         
         MenuItem* operator*() const { return *current; }
         Iterator& operator++() { current++; return *this; }
+        Iterator operator++(int) { Iterator tmp = *this; current++; return tmp; }
+        bool operator==(const Iterator& other) const { return current == other.current; }
         bool operator!=(const Iterator& other) const { return current != other.current; }
     };
 
