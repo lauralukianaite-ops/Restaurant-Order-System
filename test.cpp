@@ -40,6 +40,24 @@ void runTests() {
         std::cout << "Test 3 (Strategy Error): PASSED" << std::endl;
     }
 
+    Order o4;
+    o4.addItem(new Food("Steak", 10.0, false));
+    o4.addItem(new Drink("Juice", 2.0, true));
+
+    StandardPricing stdPrice;
+    o4.setStrategy(&stdPrice);
+    double totalStd = o4.calculateTotal();
+
+    HappyHourPricing happyPrice;
+    o4.setStrategy(&happyPrice);
+    double totalHappy = o4.calculateTotal(); // Tikimės (gėrimui 50% nuolaida): 10 + 1 = 11
+
+    if (totalStd == 12.0 && totalHappy == 11.0) {
+        std::cout << "Test 4 (Strategy Calculation): PASSED" << std::endl;
+    } else {
+        std::cout << "Test 4 (Strategy Calculation): FAILED!" << std::endl;
+    }
+
     std::cout << "All tests completed!" << std::endl;
 }
 
