@@ -4,87 +4,76 @@
 #include "Order.h"
 #include "PriceStrategy.h"
 
+void printItemInfo(MenuItem* item) {
+    std::cout << "- " << item->getName() << " (" << item->getBasePrice() << " EUR)" << std::endl;
+}
+
 int main() {
-    std::cout << "=== RESTORANO VALDYMO SISTEMA DEMO ===" << std::endl;
+    std::cout << "=== RESTAURANT'S MANAGEMENT SYSTEM DEMO ===" << std::endl;
 
-    MenuItem* pizza = new Food("Pica Margarita", 8.50, true);
-    MenuItem* steak = new Food("Kiaulienos kepsnys", 12.00, false);
+    MenuItem* pizza = new Food("Pizza Pepperoni", 8.50, true);
+    MenuItem* steak = new Food("Pork steak", 12.00, false);
     MenuItem* cola = new Drink("Coca Cola", 2.50, true);
-    MenuItem* tea = new Drink("Karšta kava", 2.00, false);
+    MenuItem* tea = new Drink("Hot coffee", 2.00, false);
 
-    // Sukuriamas užsakymas
     Order myOrder;
     myOrder.addItem(pizza);
     myOrder.addItem(steak);
     myOrder.addItem(cola);
     myOrder.addItem(tea);
 
-    // POLIMORFIZMO DEMONSTRACIJA
-    std::cout << "\n--- Paruosiamas uzsakymas (Polimorfizmas) ---" << std::endl;
+    std::cout << "\n--- Preparint the order (Polymorphism) ---" << std::endl;
+    //polymorphism
     for (size_t i = 0; i < myOrder.getSize(); ++i) {
         std::cout << myOrder.getItem(i)->prepare() << std::endl;
     }
 
-    // DYNAMIC_CAST DEMONSTRACIJA (tikrinama ar gėrimas šaltas)
-    std::cout << "\n--- Tikrinama gerimu temperatura (dynamic_cast) ---" << std::endl;
+    std::cout << "\n--- Checking temperature of the drink (dynamic_cast) ---" << std::endl;
     for (size_t i = 0; i < myOrder.getSize(); ++i) {
         MenuItem* item = myOrder.getItem(i);
         Drink* drinkPtr = dynamic_cast<Drink*>(item);
         if (drinkPtr != nullptr) {
-            std::cout << drinkPtr->getName() << " yra " 
-                      << (drinkPtr->isCold() ? "SALTAS" : "KARSTAS") << std::endl;
+            std::cout << drinkPtr->getName() << " is " 
+                      << (drinkPtr->isCold() ? "COLD" : "HOT") << std::endl;
         }
     }
 
-    // STRATEGIJOS DEMONSTRACIJA
-    std::cout << "\n--- Skaiciuojame kaina su skirtingomis strategijomis ---" << std::endl;
     StandardPricing stdPrice;
     HappyHourPricing happyPrice;
-    TakeAwayPricing takePrice;
 
-    try {
-        // Tikriname, ar meta klaidą, jei strategija nenustatyta
-        std::cout << "Bandom skaiciuoti be strategijos: " << myOrder.calculateTotal() << std::endl;
-    } catch (const StrategyNotSet& e) {
-        std::cout << "Pagauta isimtis: " << e.what() << std::endl;
-    }
-
-    // strategy
+    std::cout << "\n--- Calculating total price with different strategies ---" << std::endl;
+    //strategy
     myOrder.setStrategy(&stdPrice);
-    std::cout << "Standartine kaina: " << myOrder.calculateTotal() << " EUR" << std::endl;
+    std::cout << "Standart price: " << myOrder.calculateTotal() << " EUR" << std::endl;
 
     myOrder.setStrategy(&happyPrice);
-    std::cout << "Happy Hour kaina (nuolaida gerimams): " << myOrder.calculateTotal() << " EUR" << std::endl;
+    std::cout << "Happy Hour price: " << myOrder.calculateTotal() << " EUR" << std::endl;
 
-    myOrder.setStrategy(&takePrice);
-    std::cout << "Take Away kaina (+1 EUR uz pakuote): " << myOrder.calculateTotal() << " EUR" << std::endl;
+    std::cout << "\n--- Using Iterator ---" << std::endl;
+    //iterator
+    std::for_each(myOrder.begin(), myOrder.end(), printItemInfo);
 
-    //ITERATORIAUS DEMONSTRACIJA
-    std::cout << "\n--- Naudojame musu iteratoriu ---" << std::endl;
-    // iterator
-    for (Order::Iterator it = myOrder.begin(); it != myOrder.end(); ++it) {
-        std::cout << "- " << (*it)->getName() << " (" << (*it)->getBasePrice() << " EUR)" << std::endl;
-    }
-
-    // 5. GILUS KOPIJAVIMAS (Deep Copy)
-    std::cout << "\n--- Darome gilia konteinerio kopija ---" << std::endl;
-    // deep copy
+    std::cout << "\n--- Deep copy of the container ---" << std::endl;
+    //deep copy
     Order copiedOrder = myOrder;
-    std::cout << "Originalaus uzsakymo dydis: " << myOrder.getSize() << std::endl;
-    std::cout << "Kopijuoto uzsakymo dydis: " << copiedOrder.getSize() << std::endl;
+    std::cout << "Original order size: " << myOrder.getSize() << std::endl;
+    std::cout << "Copied order size: " << copiedOrder.getSize() << std::endl;
 
-    // 6. CALLBACK FILTRAVIMAS
-    std::cout << "\n--- Filtruojame tik vegetariska maista (Callback) ---" << std::endl;
+    std::cout << "\n--- Filtering elements (Callback) ---" << std::endl;
     // callback
+    // Pirmoji versija: filtruojame tik veganiska maista
     Order veganMenu = myOrder.filterItems([](MenuItem* item) {
         Food* foodPtr = dynamic_cast<Food*>(item);
         return (foodPtr != nullptr && foodPtr->getIsVegan());
     });
 
-    for (Order::Iterator it = veganMenu.begin(); it != veganMenu.end(); ++it) {
-        std::cout << "Rastas veganiskas patiekalas: " << (*it)->getName() << std::endl;
-    }
+    // Antroji versija: filtruojame elementus, kurie kainuoja maziau nei 5 EUR
+    Order cheapMenu = myOrder.filterItems([](MenuItem* item) {
+        return item->getBasePrice() < 5.0;
+    });
 
-    std::cout << "\n=== DEMO PABAIGA ===" << std::endl;
+    std::cout << "Vegan orders count: " << veganMenu.getSize() << std::endl;
+    std::cout << "Cheaper elements (<5 EUR) count: " << cheapMenu.getSize() << std::endl;
+
     return 0;
 }
