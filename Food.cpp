@@ -6,12 +6,11 @@ std::string MenuItem::getName() const { return name; }
 double MenuItem::getBasePrice() const { return basePrice; }
 bool MenuItem::operator<(const MenuItem& other) const { return this->basePrice < other.basePrice; }
 
-// Food realizacija
 Food::Food(const std::string& name, double price, bool vegan) 
     : MenuItem(name, price), isVegan(vegan) {}
 
 MenuItem* Food::clone() const {
-    return new Food(*this); // Prototype šablonas
+    return new Food(*this);
 }
 
 std::string Food::prepare() const {

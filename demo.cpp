@@ -61,13 +61,11 @@ int main() {
 
     std::cout << "\n--- Filtering elements (Callback) ---" << std::endl;
     // callback
-    // Pirmoji versija: filtruojame tik veganiska maista
     Order veganMenu = myOrder.filterItems([](MenuItem* item) {
         Food* foodPtr = dynamic_cast<Food*>(item);
         return (foodPtr != nullptr && foodPtr->getIsVegan());
     });
 
-    // Antroji versija: filtruojame elementus, kurie kainuoja maziau nei 5 EUR
     Order cheapMenu = myOrder.filterItems([](MenuItem* item) {
         return item->getBasePrice() < 5.0;
     });

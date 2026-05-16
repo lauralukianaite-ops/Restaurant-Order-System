@@ -9,7 +9,6 @@ public:
     NotImplementedException() : std::logic_error("Klaida: Sis metodas neigvendintas sio tipo elementui!") {}
 };
 
-// Bazinė klasė
 class MenuItem {
 protected:
     std::string name;
@@ -29,8 +28,6 @@ public:
     virtual bool operator<(const MenuItem& other) const;
 };
 
-
-// Išvestinė klasė: Food
 class Food : public MenuItem {
 private:
     bool isVegan;
@@ -44,8 +41,6 @@ public:
     bool getIsVegan() const;
 };
 
-
-// Išvestinė klasė: Drink
 class Drink : public MenuItem {
 private:
     bool cold;

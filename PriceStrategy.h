@@ -4,7 +4,6 @@
 #include "MenuItem.h"
 #include <vector>
 
-// Bazinė strategijos klasė
 class PriceStrategy {
 public:
     virtual ~PriceStrategy() = default;
@@ -27,12 +26,10 @@ public:
     double calculate(const std::vector<MenuItem*>& items) const override {
         double total = 0;
         for (MenuItem* item : items) {
-            // Štai čia paprastas patikrinimas: jei tai gėrimas, kaina pusiau
-            // Naudojame dynamic_cast, kad sužinotume, ar tai gėrimas
             if (dynamic_cast<const Drink*>(item) != nullptr) {
-                total += item->getBasePrice() * 0.5; // 50% nuolaida gėrimams
+                total += item->getBasePrice() * 0.5;
             } else {
-                total += item->getBasePrice(); // Maistui pilna kaina
+                total += item->getBasePrice();
             }
         }
         return total;
@@ -44,7 +41,7 @@ public:
     double calculate(const std::vector<MenuItem*>& items) const override {
         double total = 0;
         for (MenuItem* item : items) {
-            total += item->getBasePrice() + 1.0; // Kaina + 1 euras už dėžutę/puodelį
+            total += item->getBasePrice() + 1.0;
         }
         return total;
     }

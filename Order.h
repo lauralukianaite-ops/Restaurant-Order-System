@@ -5,9 +5,8 @@
 #include <functional>
 #include <cstddef>
 
-// Išankstinė deklaracija
 class OrderImpl;
-class PriceStrategy; // Reikės vėliau strategijai
+class PriceStrategy;
 
 class StrategyNotSet : public std::logic_error {
 public:
@@ -16,13 +15,12 @@ public:
 
 class Order {
 private:
-    OrderImpl* impl; // PImpl
+    OrderImpl* impl;
 
 public:
     Order();
     ~Order();
-    
-    // Gilus kopijavimas
+
     Order(const Order& other);
     Order& operator=(const Order& other);
 
@@ -34,10 +32,9 @@ public:
     double calculateTotal() const;
     Order filterItems(std::function<bool(MenuItem*)> callback) const;
 
-    // Iteratorius
     class Iterator {
     private:
-        MenuItem** current; // Rodyklė į masyvo elementa
+        MenuItem** current;
     public:
         using iterator_category = std::forward_iterator_tag;
         using value_type = MenuItem*;
