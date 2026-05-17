@@ -8,7 +8,7 @@ MenuItem* Drink::clone() const {
 }
 
 std::string Drink::prepare() const {
-    return "Pilstomas gerimas: " + name + " (Ipilama i stikline...)";
+    return "Pouring the drink: " + name + " (pouring into a glass...)";
 }
 
 bool Drink::isCold() const { return cold; }

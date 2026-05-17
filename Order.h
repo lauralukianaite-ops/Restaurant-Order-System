@@ -10,7 +10,7 @@ class PriceStrategy;
 
 class StrategyNotSet : public std::logic_error {
 public:
-    StrategyNotSet() : std::logic_error("Klaida: Skaiciavimo strategija nenustatyta!") {}
+    StrategyNotSet() : std::logic_error("Error: calculation strategy is not set!") {}
 };
 
 class Order {
@@ -24,6 +24,7 @@ public:
     Order(const Order& other);
     Order& operator=(const Order& other);
 
+    void removeItem(size_t index);
     void addItem(MenuItem* item);
     size_t getSize() const;
     MenuItem* getItem(size_t index) const;
@@ -31,6 +32,8 @@ public:
     void setStrategy(PriceStrategy* strategy);
     double calculateTotal() const;
     Order filterItems(std::function<bool(MenuItem*)> callback) const;
+
+    std::vector<std::string> prepareAll() const;
 
     class Iterator {
     private:

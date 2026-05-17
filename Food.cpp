@@ -14,7 +14,7 @@ MenuItem* Food::clone() const {
 }
 
 std::string Food::prepare() const {
-    return "Gaminamas patiekalas: " + name + " (Virtuveje kepama/verdama...)";
+    return "Dish preparing: " + name + " (Cooking in the kitchen...)";
 }
 
 bool Food::getIsVegan() const { return isVegan; }

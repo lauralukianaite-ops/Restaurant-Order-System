@@ -84,3 +84,19 @@ Order Order::filterItems(std::function<bool(MenuItem*)> callback) const {
     }
     return filteredOrder;
 }
+
+std::vector<std::string> Order::prepareAll() const {
+    std::vector<std::string> results;
+    for (MenuItem* item : impl->items) {
+        results.push_back(item->prepare());
+    }
+    return results;
+}
+
+void Order::removeItem(size_t index) {
+    if (index >= impl->items.size()) {
+        return;
+    }
+    delete impl->items[index];
+    impl->items.erase(impl->items.begin() + index);
+}

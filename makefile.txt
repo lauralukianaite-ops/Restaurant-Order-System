@@ -1,0 +1,35 @@
+CC = g++
+CFLAGS = -Wall -std=c++11
+
+OBJS = Food.o Drink.o Order.o
+
+all: demo test
+
+Food.o: Food.cpp MenuItem.h
+	$(CC) $(CFLAGS) -c Food.cpp
+
+Drink.o: Drink.cpp MenuItem.h
+	$(CC) $(CFLAGS) -c Drink.cpp
+
+Order.o: Order.cpp Order.h PriceStrategy.h MenuItem.h
+	$(CC) $(CFLAGS) -c Order.cpp
+
+module.o: Food.o Drink.o Order.o
+	ld -r Food.o Drink.o Order.o -o module.o
+
+demo: demo.cpp $(OBJS)
+	$(CC) $(CFLAGS) demo.cpp $(OBJS) -o demo
+
+test: test.cpp $(OBJS)
+	$(CC) $(CFLAGS) test.cpp $(OBJS) -o test
+
+run_demo: demo
+	./demo
+
+run_test: test
+	./test
+
+clean:
+	rm -f *.o demo test
+
+rebuild: clean all

@@ -22,11 +22,15 @@ int main() {
     myOrder.addItem(cola);
     myOrder.addItem(tea);
 
-    std::cout << "\n--- Preparint the order (Polymorphism) ---" << std::endl;
-    //polymorphism
+    std::cout << "\n--- Preparing the order (Polymorphism) ---" << std::endl;
+    // polymorphism
     for (size_t i = 0; i < myOrder.getSize(); ++i) {
         std::cout << myOrder.getItem(i)->prepare() << std::endl;
     }
+
+    std::cout << "\n--- Calling virtual method on all items via container ---" << std::endl;
+    std::vector<std::string> preparations = myOrder.prepareAll();
+    std::cout << "Total items prepared: " << preparations.size() << std::endl;
 
     std::cout << "\n--- Checking temperature of the drink (dynamic_cast) ---" << std::endl;
     for (size_t i = 0; i < myOrder.getSize(); ++i) {
@@ -42,7 +46,7 @@ int main() {
     HappyHourPricing happyPrice;
 
     std::cout << "\n--- Calculating total price with different strategies ---" << std::endl;
-    //strategy
+    // strategy
     myOrder.setStrategy(&stdPrice);
     std::cout << "Standart price: " << myOrder.calculateTotal() << " EUR" << std::endl;
 
@@ -50,11 +54,11 @@ int main() {
     std::cout << "Happy Hour price: " << myOrder.calculateTotal() << " EUR" << std::endl;
 
     std::cout << "\n--- Using Iterator ---" << std::endl;
-    //iterator
+    // iterator
     std::for_each(myOrder.begin(), myOrder.end(), printItemInfo);
 
     std::cout << "\n--- Deep copy of the container ---" << std::endl;
-    //deep copy
+    // deep copy
     Order copiedOrder = myOrder;
     std::cout << "Original order size: " << myOrder.getSize() << std::endl;
     std::cout << "Copied order size: " << copiedOrder.getSize() << std::endl;
