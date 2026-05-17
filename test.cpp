@@ -102,7 +102,7 @@ void runTests() {
 
     /*
     {
-        // 7a: prepare() turi mesti NotImplementedException
+        // 7a: prepare() must throw NotImplementedException
         SpecialOffer offer("Coupon", 0.0);
         try {
             offer.prepare();
@@ -111,7 +111,7 @@ void runTests() {
             std::cout << "Test 7a (SpecialOffer prepare exception): PASSED" << std::endl;
         }
  
-        // 7b: clone() turi grazinti nauja objekto kopija (Prototype)
+        // 7b: clone() must return a new copy of the object (Prototype)
         MenuItem* original = new SpecialOffer("Discount card", 5.0);
         MenuItem* copy   = original->clone();
         bool cloneOk = (copy != nullptr)
@@ -126,7 +126,7 @@ void runTests() {
         delete original;
         delete copy;
  
-        // 7c: SpecialOffer turi veikti Order konteineryje ir buti pasiekiamas per iteratoriu
+        // 7c: SpecialOffer must work inside the Order container and be accessible via iterator
         Order o;
         o.addItem(new Food("Pizza", 8.0, false));
         o.addItem(new SpecialOffer("Coupon -20%", 0.0));
@@ -142,7 +142,7 @@ void runTests() {
             std::cout << "Test 7c (SpecialOffer in Order): FAILED!" << std::endl;
         }
  
-        // 7d: Gilus kopijavimas su SpecialOffer konteineryje
+        // 7d: Deep copy with SpecialOffer inside the container
         Order copied = o;
         assert(copied.getSize() == o.getSize());
         std::cout << "Test 7d (SpecialOffer deep copy): PASSED" << std::endl;

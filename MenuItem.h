@@ -6,7 +6,7 @@
 
 class NotImplementedException : public std::logic_error {
 public:
-    NotImplementedException() : std::logic_error("Klaida: Sis metodas neigvendintas sio tipo elementui!") {}
+    NotImplementedException() : std::logic_error("Error! This method is not supported for this type of element!") {}
 };
 
 class MenuItem {
