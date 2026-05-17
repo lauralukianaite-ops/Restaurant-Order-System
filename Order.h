@@ -44,9 +44,22 @@ public:
 
         Iterator(MenuItem** ptr) : current(ptr) {}
         
-        MenuItem* operator*() const { return *current; }
-        Iterator& operator++() { current++; return *this; }
-        Iterator operator++(int) { Iterator tmp = *this; current++; return tmp; }
+        MenuItem* operator*() const { 
+            if (current == nullptr) return nullptr;
+            return *current; 
+        }
+
+        Iterator& operator++() { 
+            if (current != nullptr) current++; 
+            return *this;
+        }
+
+        Iterator operator++(int) { 
+            Iterator tmp = *this; 
+            if (current != nullptr) current++; 
+            return tmp; 
+        }
+
         bool operator==(const Iterator& other) const { return current == other.current; }
         bool operator!=(const Iterator& other) const { return current != other.current; }
     };
